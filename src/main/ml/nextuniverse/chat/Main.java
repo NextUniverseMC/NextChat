@@ -1,10 +1,15 @@
-package ml.nextuniverse.chat;
+package main.ml.nextuniverse.chat;
 
+import com.google.common.util.concurrent.FutureCallback;
+import com.mrpowergamerbr.temmiewebhook.DiscordMessage;
+import com.mrpowergamerbr.temmiewebhook.TemmieWebhook;
+import de.btobastian.javacord.DiscordAPI;
+import de.btobastian.javacord.Javacord;
+import de.btobastian.javacord.entities.message.Message;
+import de.btobastian.javacord.listener.message.MessageCreateListener;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -29,6 +34,31 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
+
+        DiscordAPI api = Javacord.getApi("Mzc3NTUzNjUzMzM2MTEzMTYy.DOOnww.ZymYmGMRGsSMXw4F6YmYTnM58GA", true);
+        // connect
+        api.connect(new FutureCallback<DiscordAPI>() {
+            @Override
+            public void onSuccess(DiscordAPI api) {
+                // register listener
+                api.registerListener(new MessageCreateListener() {
+                    @Override
+                    public void onMessageCreate(DiscordAPI api, Message message) {
+                        if (!message.isPrivateMessage()) {
+                            if (message.getChannelReceiver().getId().equals("377547884591316993") && !message.getAuthor().isBot()) {
+                                Bukkit.broadcastMessage(ChatColor.LIGHT_PURPLE + message.getAuthor().getName() + " [Discord]" + ChatColor.WHITE
+                                + ": " + message.getContent());
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -67,6 +97,15 @@ public class Main extends JavaPlugin implements Listener {
                 }
             }
             e.setFormat("");
+
+            TemmieWebhook webhook = new TemmieWebhook("https://discordapp.com/api/webhooks/377547902333091858/Dd5G-gx1r7Wk5pug69cBKdO3Q1F4EP-7-So3bOvHTFOOQq0i18jB1itHr6ajTTaL6MCo");
+            DiscordMessage message = DiscordMessage.builder()
+                    .avatarUrl("https://crafatar.com/avatars/" + e.getPlayer().getName() + "?overlay&default=Steve")
+                    .username("TheDiamondPicks [In-Game]")
+                    .content(e.getMessage())
+                    .build();
+            webhook.sendMessage(message);
+
         }
     }
 

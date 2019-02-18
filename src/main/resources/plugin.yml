@@ -1,7 +1,7 @@
 name: NextChat
 author: TheDiamondPicks
 version: 1.0
-main: ml.nextuniverse.chat.Main
+main: main.ml.nextuniverse.chat.Main
 commands:
   nick:
     description: Give yourself a nickname

@@ -9,6 +9,15 @@
     <version>1.0</version>
     <repositories>
         <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>javacord-repo</id>
+            <url>http://repo.bastian-oppermann.de</url>
+        </repository>
+
+        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -28,6 +37,52 @@
             <version>1.12-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>de.btobastian.javacord</groupId>
+            <artifactId>javacord</artifactId>
+            <version>2.0.17</version>
+            <classifier>shaded</classifier>
+        </dependency>
+        <!-- Any SLF4J comaptible logging framework. -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.MrPowerGamerBR</groupId>
+            <artifactId>TemmieWebhook</artifactId>
+            <version>59de40c3b6</version>
+        </dependency>
     </dependencies>
-
+    <build>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <!-- any other plugins -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.1</version>
+                <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
